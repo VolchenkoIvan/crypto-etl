@@ -8,3 +8,4 @@ logs/
 *.log
 # IDE (PyCharm)
 .idea/
+__pycache__
