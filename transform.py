@@ -14,7 +14,6 @@ def transform_data(data):
 
     # Выбираем нужные поля
     df = df[[
-        "id",
         "name",
         "symbol",
         "current_price",
@@ -27,7 +26,6 @@ def transform_data(data):
 
     # Переименовываем столбцы
     df.columns = [
-        "id",
         "name",
         "symbol",
         "price",
@@ -35,7 +33,8 @@ def transform_data(data):
     ]
 
     # Добавляем timestamp загрузки
-    df["load_time"] = datetime.now()
+    df["load_date_id"] = int(datetime.now().strftime("%Y%m%d"))
+    df["load_date_id"] = df["load_date_id"].astype("int32")
 
     # Очистка данных
     df = df.drop_duplicates()
