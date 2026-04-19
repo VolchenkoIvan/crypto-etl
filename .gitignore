@@ -1,0 +1,10 @@
+.venv/Lib
+# Виртуальное окружение
+.venv/
+venv/
+.env
+# Логи
+logs/
+*.log
+# IDE (PyCharm)
+.idea/
