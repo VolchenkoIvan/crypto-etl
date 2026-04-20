@@ -33,8 +33,10 @@ def transform_data(data):
     ]
 
     # Добавляем timestamp загрузки
-    df["load_date_id"] = int(datetime.now().strftime("%Y%m%d%H"))
-    df["load_date_id"] = df["load_date_id"].astype("int32")
+    df["date_id"] = int(datetime.now().strftime("%Y%m%d"))
+    df["date_id"] = df["date_id"].astype("int32")
+    df["hour_id"] = int(datetime.now().strftime("%H"))
+    df["hour_id"] = df["hour_id"].astype("int16")
 
     # Очистка данных
     df = df.drop_duplicates()

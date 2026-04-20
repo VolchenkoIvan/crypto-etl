@@ -1,0 +1,9 @@
+-- STG таблица для хранения данных о монетах
+CREATE TABLE IF NOT EXISTS stg.crypto_prices (
+    name TEXT,
+    symbol TEXT,
+    price NUMERIC,
+    market_cap NUMERIC,
+    date_id INT,
+    hour_id INT
+);
