@@ -8,7 +8,7 @@ load_dotenv()
 
 def fetch_data():
     """
-    Получает данные с API и возвращает JSON.
+    Получаем данные с API и возвращаем JSON.
     """
     api_url = os.getenv("API_URL")
     params = {

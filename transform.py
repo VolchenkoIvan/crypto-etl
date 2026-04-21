@@ -2,9 +2,10 @@ import pandas as pd
 import logging
 from datetime import datetime
 
+
 def transform_data(data):
     """
-    Преобразует JSON в DataFrame и очищает данные.
+    Преобразуем JSON в DataFrame и очищаем данные.
     """
     if not data:
         logging.warning("No data to transform")
@@ -20,7 +21,7 @@ def transform_data(data):
         "market_cap"
     ]]
 
-    # Приводим к числовому типа данных
+    # Приводим к числовому типу данных
     df["current_price"] = pd.to_numeric(df["current_price"], errors="coerce")
     df["market_cap"] = pd.to_numeric(df["market_cap"], errors="coerce")
 
@@ -40,10 +41,8 @@ def transform_data(data):
 
     # Очистка данных
     df = df.drop_duplicates()
-
     # Удаляем строки с null price
     df = df[df["price"].notnull()]
-
     # Проверка: цена должна быть > 0
     df = df[df["price"] > 0]
 

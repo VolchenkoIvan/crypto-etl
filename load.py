@@ -9,7 +9,7 @@ load_dotenv()
 
 def get_engine():
     """
-    Создает подключение к PostgreSQL через SQLAlchemy
+    Создаем подключение к PostgreSQL через SQLAlchemy
     """
     user = os.getenv("DB_USER")
     password = os.getenv("DB_PASSWORD")
@@ -24,7 +24,7 @@ def get_engine():
 
 def load_data(df):
     """
-    Загружает DataFrame в PostgreSQL
+    Загружаем DataFrame в PostgreSQL
     """
     if df.empty:
         logging.warning("No data to load")
