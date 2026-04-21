@@ -2,9 +2,6 @@ import logging
 from extract import fetch_data
 from transform import transform_data
 from load import load_data
-from load import run_post_load_procedure
-import time
-
 
 # Настройка логирования
 logging.basicConfig(
@@ -28,8 +25,6 @@ def run_etl():
     df = transform_data(raw_data)
     # Load
     load_data(df)
-    # Run procedue
-    run_post_load_procedure()
 
     logging.info("ETL finished")
 
@@ -41,4 +36,9 @@ if __name__ == "__main__":
     #
     # except KeyboardInterrupt:
     #     print("ETL stopped by user")
+
     run_etl()
+    # raw_data = fetch_data()
+    # import json
+    #
+    # print(json.dumps(raw_data[:1], indent=2, ensure_ascii=False))

@@ -33,22 +33,22 @@ def load_data(df):
     try:
         engine = get_engine()
 
-        df.to_sql(
-            name="crypto_prices",
-            schema="stg",
-            con=engine,
-            if_exists="append",
-            index=False,
-            method="multi"
-        )
+        with engine.begin() as conn:
+            # 1. TRUNCATE
+            conn.execute(text("TRUNCATE TABLE stg.crypto_prices"))
+
+            df.to_sql(
+                name="crypto_prices",
+                schema="stg",
+                con=conn,
+                if_exists="append",
+                index=False,
+                method="multi"
+            )
+
+            conn.execute(text("CALL dwh.load_crypto_prices()"))
 
         logging.info(f"Loaded {len(df)} rows into database")
 
     except Exception as e:
         logging.error(f"Error while loading data: {e}")
-
-def run_post_load_procedure():
-    engine = get_engine()
-
-    with engine.begin() as conn:
-        conn.execute(text("CALL dwh.load_crypto_prices()"))
