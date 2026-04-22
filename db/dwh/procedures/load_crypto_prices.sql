@@ -46,7 +46,8 @@ BEGIN
     JOIN dwh.coins c
         ON c.name = s.name
        AND c.symbol = s.symbol
-    WHERE error_count = 0;
+    WHERE error_count = 0
+    ON CONFLICT (date_id, hour_id,coin_id) DO NOTHING;;
 
     --TRUNCATE TABLE stg.crypto_prices;
     insert into stg.crypto_prices_err(
