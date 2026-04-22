@@ -9,43 +9,52 @@ def transform_data(data):
     """
     if not data:
         logging.warning("No data to transform")
-        return pd.DataFrame()
+        raise ValueError("No data to transform")
 
-    df = pd.DataFrame(data)
+    try:
+        # Фиксируем старт шага Transform.
+        logging.info(f"Transform step started: rows_in={len(data)}")
 
-    # Выбираем нужные поля
-    df = df[[
-        "name",
-        "symbol",
-        "current_price",
-        "market_cap"
-    ]]
+        df = pd.DataFrame(data)
 
-    # Приводим к числовому типу данных
-    df["current_price"] = pd.to_numeric(df["current_price"], errors="coerce")
-    df["market_cap"] = pd.to_numeric(df["market_cap"], errors="coerce")
+        # Выбираем нужные поля
+        df = df[[
+            "name",
+            "symbol",
+            "current_price",
+            "market_cap"
+        ]]
 
-    # Переименовываем столбцы
-    df.columns = [
-        "name",
-        "symbol",
-        "price",
-        "market_cap"
-    ]
+        # Приводим к числовому типу данных
+        df["current_price"] = pd.to_numeric(df["current_price"], errors="coerce")
+        df["market_cap"] = pd.to_numeric(df["market_cap"], errors="coerce")
 
-    # Добавляем timestamp загрузки
-    df["date_id"] = int(datetime.now().strftime("%Y%m%d"))
-    df["date_id"] = df["date_id"].astype("int32")
-    df["hour_id"] = int(datetime.now().strftime("%H"))
-    df["hour_id"] = df["hour_id"].astype("int16")
+        # Переименовываем столбцы
+        df.columns = [
+            "name",
+            "symbol",
+            "price",
+            "market_cap"
+        ]
 
-    # Очистка данных
-    df = df.drop_duplicates()
-    # Удаляем строки с null price
-    df = df[df["price"].notnull()]
-    # Проверка: цена должна быть > 0
-    df = df[df["price"] > 0]
+        # Добавляем timestamp загрузки
+        df["date_id"] = int(datetime.now().strftime("%Y%m%d"))
+        df["date_id"] = df["date_id"].astype("int32")
+        df["hour_id"] = int(datetime.now().strftime("%H"))
+        df["hour_id"] = df["hour_id"].astype("int16")
 
-    logging.info(f"Transformed data: {len(df)} rows after cleaning")
+        # Очистка данных
+        df = df.drop_duplicates()
+        # Удаляем строки с null price
+        df = df[df["price"].notnull()]
+        # Проверка: цена должна быть > 0
+        df = df[df["price"] > 0]
 
-    return df
+        # Фиксируем финиш шага Transform
+        logging.info(f"Transformed step finished: rows={len(df)}")
+
+        return df
+    except Exception as e:
+        # Fail-fast: логируем traceback и пробрасываем исключение, чтобы ETL завершился с ошибкой и корректным статусом.
+        logging.exception(f"Error while transforming data: {e}")
+        raise

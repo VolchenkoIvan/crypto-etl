@@ -31,10 +31,12 @@ def load_data(df):
         return
 
     try:
+        # Фиксируем старт шага Load и объем данных.
+        logging.info(f"Load step started: rows_in={len(df)}")
+
         engine = get_engine()
 
         with engine.begin() as conn:
-            # 1. TRUNCATE
             conn.execute(text("TRUNCATE TABLE stg.crypto_prices"))
 
             df.to_sql(
@@ -48,7 +50,10 @@ def load_data(df):
 
             conn.execute(text("CALL dwh.load_crypto_prices()"))
 
+        # Фиксируем успешное завершение шага Load
         logging.info(f"Loaded {len(df)} rows into database")
 
     except Exception as e:
-        logging.error(f"Error while loading data: {e}")
+        # Fail-fast: логируем полный traceback и пробрасываем ошибку, чтобы не получать ложный "успех" ETL.
+        logging.exception(f"Error while loading data: {e}")
+        raise

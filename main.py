@@ -1,4 +1,5 @@
 import logging
+import sys
 from extract import fetch_data
 from transform import transform_data
 from load import load_data
@@ -17,6 +18,7 @@ def run_etl():
     2. Transform
     3. Load
     """
+    # Фиксация начала run
     logging.info("ETL started")
 
     # Extract
@@ -37,7 +39,12 @@ if __name__ == "__main__":
     # except KeyboardInterrupt:
     #     print("ETL stopped by user")
 
-    run_etl()
+    # Fail-fast entrypoint: при любой критической ошибке завершаем процесс с non-zero exit code.
+    try:
+        run_etl()
+    except Exception as e:
+        logging.exception("ETL failed: %s", e)
+        sys.exit(1)
     # raw_data = fetch_data()
     # import json
     #
