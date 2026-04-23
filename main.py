@@ -31,14 +31,6 @@ def run_etl():
     logging.info("ETL finished")
 
 if __name__ == "__main__":
-    # try:
-    #     while True:
-    #         run_etl()
-    #         time.sleep(3600)
-    #
-    # except KeyboardInterrupt:
-    #     print("ETL stopped by user")
-
     # Fail-fast entrypoint: при любой критической ошибке завершаем процесс с non-zero exit code.
     try:
         run_etl()
