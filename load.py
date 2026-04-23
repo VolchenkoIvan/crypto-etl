@@ -54,6 +54,5 @@ def load_data(df):
         logging.info(f"Loaded {len(df)} rows into database")
 
     except Exception as e:
-        # Fail-fast: логируем полный traceback и пробрасываем ошибку, чтобы не получать ложный "успех" ETL.
         logging.exception(f"Error while loading data: {e}")
         raise

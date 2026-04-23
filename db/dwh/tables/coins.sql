@@ -5,3 +5,5 @@ CREATE TABLE IF NOT EXISTS dwh.coins (
 	symbol text NULL,
 	CONSTRAINT coins_pkey PRIMARY KEY (id)
 );
+ALTER TABLE dwh.coins
+ADD CONSTRAINT uq_coins UNIQUE (name,symbol);

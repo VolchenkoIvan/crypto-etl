@@ -4,6 +4,5 @@ CREATE TABLE IF NOT EXISTS stg.crypto_prices (
     symbol TEXT,
     price TEXT,
     market_cap TEXT,
-    date_id INT,
-    hour_id INT
+    date_id INT
 );

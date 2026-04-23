@@ -30,33 +30,29 @@ BEGIN
 
     -- 2. грузим факт с join на справочник
     INSERT INTO dwh.crypto_prices (
-        coin_id,
-        price,
-        market_cap,
-        date_id,
-        hour_id
+        coin_id
+        ,price
+        ,market_cap
+        ,date_id
     )
     SELECT
-        c.id,
-        s.price::numeric,
-        s.market_cap::numeric,
-        s.date_id,
-        s.hour_id
+        c.id
+        ,s.price::numeric
+        ,s.market_cap::numeric
+        ,s.date_id
     FROM tmp_validation s
     JOIN dwh.coins c
         ON c.name = s.name
        AND c.symbol = s.symbol
     WHERE error_count = 0
-    ON CONFLICT (date_id, hour_id,coin_id) DO NOTHING;;
+    ON CONFLICT (date_id,coin_id) DO NOTHING;
 
-    --TRUNCATE TABLE stg.crypto_prices;
     insert into stg.crypto_prices_err(
         name
         ,symbol
         ,price
         ,market_cap
         ,date_id
-        ,hour_id
     )
     SELECT
         name
@@ -64,7 +60,6 @@ BEGIN
         ,price
         ,market_cap
         ,date_id
-        ,hour_id
     FROM tmp_validation
     WHERE error_count > 0;
 END;
