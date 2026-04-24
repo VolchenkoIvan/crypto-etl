@@ -4,6 +4,13 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
 
+    PERFORM dwh.p_execution_log(
+        'dwh.load_crypto_prices',
+        'START',
+        NULL,
+        NULL
+    );
+
     -- 1. вставляем новые монеты в справочник
     INSERT INTO dwh.coins (name, symbol)
     SELECT DISTINCT s.name, s.symbol
@@ -62,5 +69,25 @@ BEGIN
         ,date_id
     FROM tmp_validation
     WHERE error_count > 0;
+
+    PERFORM dwh.p_execution_log(
+        'dwh.load_crypto_prices',
+        'END',
+        NULL,
+        NULL
+    );
+
+    EXCEPTION WHEN OTHERS THEN
+
+    -- ERROR лог
+    PERFORM dwh.p_execution_log(
+        'dwh.load_crypto_prices',
+        'ERROR',
+        NULL,
+        SQLERRM
+    );
+
+    RAISE;
+
 END;
 $$;
