@@ -4,11 +4,15 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
 
+    -- Открываем соединение для логов
+    PERFORM dblink_connect(
+        'log_conn',
+        'host=localhost dbname=postgres user=logger_user password=strong_password'
+    );
+
     PERFORM dwh.p_execution_log(
         'dwh.load_crypto_prices',
-        'START',
-        NULL,
-        NULL
+        'START'
     );
 
     -- 1. вставляем новые монеты в справочник
@@ -72,10 +76,10 @@ BEGIN
 
     PERFORM dwh.p_execution_log(
         'dwh.load_crypto_prices',
-        'END',
-        NULL,
-        NULL
+        'END'
     );
+     -- 🔹 закрываем соединение
+    PERFORM dblink_disconnect('log_conn');
 
     EXCEPTION WHEN OTHERS THEN
 
@@ -86,6 +90,8 @@ BEGIN
         NULL,
         SQLERRM
     );
+
+    PERFORM dblink_disconnect('log_conn');
 
     RAISE;
 
