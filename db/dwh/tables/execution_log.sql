@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS dwh.execution_log (
     status          TEXT        NOT NULL, -- START / END / ERROR
     params          TEXT        NULL,
     error_message   TEXT        NULL,
-    created_at      TIMESTAMP   DEFAULT NOW()
+    created_at      TIMESTAMP   DEFAULT NOW(),
+    execution_id    UUID        NULL,
+    row_cnt         INT      NULL
 );
 
 -- быстрый поиск по процедуре и времени

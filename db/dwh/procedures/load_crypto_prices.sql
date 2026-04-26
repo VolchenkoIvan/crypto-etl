@@ -2,6 +2,9 @@
 CREATE OR REPLACE PROCEDURE dwh.load_crypto_prices()
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_execution_id UUID := gen_random_uuid();
+    v_row_cnt INT;
 BEGIN
 
     -- Открываем соединение для логов
@@ -11,6 +14,7 @@ BEGIN
     );
 
     PERFORM dwh.p_execution_log(
+        v_execution_id,
         'dwh.load_crypto_prices',
         'START'
     );
@@ -58,6 +62,8 @@ BEGIN
     WHERE error_count = 0
     ON CONFLICT (date_id,coin_id) DO NOTHING;
 
+    GET DIAGNOSTICS v_row_cnt = ROW_COUNT;
+
     insert into stg.crypto_prices_err(
         name
         ,symbol
@@ -75,8 +81,10 @@ BEGIN
     WHERE error_count > 0;
 
     PERFORM dwh.p_execution_log(
+        v_execution_id,
         'dwh.load_crypto_prices',
-        'END'
+        'END',
+        v_row_cnt
     );
      -- 🔹 закрываем соединение
     PERFORM dblink_disconnect('log_conn');
@@ -85,8 +93,10 @@ BEGIN
 
     -- ERROR лог
     PERFORM dwh.p_execution_log(
+        v_execution_id,
         'dwh.load_crypto_prices',
         'ERROR',
+        NULL,
         NULL,
         SQLERRM
     );
