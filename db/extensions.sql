@@ -1,4 +1,4 @@
--- Расширение для параллельного открытия сессии (для логов)
+-- EXTENSION for parallel sessions (for logs)
 CREATE EXTENSION dblink;
--- Расширение для автоматической генерации UUID (для логов)
+-- EXTENSION for generating UUID (for logs)
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

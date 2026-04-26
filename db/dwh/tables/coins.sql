@@ -1,4 +1,4 @@
--- Справочник монет
+-- Dim coins
 CREATE TABLE IF NOT EXISTS dwh.coins (
 	id serial4 NOT NULL,
 	"name" text NULL,

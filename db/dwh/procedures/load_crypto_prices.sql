@@ -7,7 +7,7 @@ DECLARE
     v_row_cnt INT;
 BEGIN
 
-    -- Открываем соединение для логов
+    -- Open connection for logs
     PERFORM dblink_connect(
         'log_conn',
         'host=localhost dbname=postgres user=logger_user password=strong_password'
@@ -19,7 +19,7 @@ BEGIN
         'START'
     );
 
-    -- 1. вставляем новые монеты в справочник
+    -- INSERT new coins to the DIM
     INSERT INTO dwh.coins (name, symbol)
     SELECT DISTINCT s.name, s.symbol
     FROM stg.crypto_prices s
@@ -43,7 +43,7 @@ BEGIN
 	    ) AS error_count
 	FROM stg.crypto_prices;
 
-    -- 2. грузим факт с join на справочник
+    -- Load fact STG->DWH
     INSERT INTO dwh.crypto_prices (
         coin_id
         ,price
@@ -86,12 +86,12 @@ BEGIN
         'END',
         v_row_cnt
     );
-     -- 🔹 закрываем соединение
+     -- close connection
     PERFORM dblink_disconnect('log_conn');
 
     EXCEPTION WHEN OTHERS THEN
 
-    -- ERROR лог
+    -- ERROR log
     PERFORM dwh.p_execution_log(
         v_execution_id,
         'dwh.load_crypto_prices',

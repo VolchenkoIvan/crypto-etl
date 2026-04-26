@@ -1,4 +1,4 @@
--- DWH таблица для хранения данных о монетах
+-- DWH table for crypto information
 CREATE TABLE IF NOT EXISTS dwh.crypto_prices (
     price NUMERIC,
     market_cap NUMERIC,

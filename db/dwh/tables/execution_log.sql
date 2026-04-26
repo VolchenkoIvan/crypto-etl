@@ -5,10 +5,9 @@ CREATE TABLE IF NOT EXISTS dwh.execution_log (
     error_message   TEXT        NULL,
     created_at      TIMESTAMP   DEFAULT NOW(),
     execution_id    UUID        NULL,
-    row_cnt         INT      NULL
+    row_cnt         INT         NULL
 );
 
--- быстрый поиск по процедуре и времени
 CREATE INDEX idx_proc_log_name
 ON dwh.execution_log (procedure_name);
 
