@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 
     -- Open connection for logs
-    PERFORM dblink_connect(
+    PERFORM dwh.dblink_connect(
         'log_conn',
         'host=localhost dbname=postgres user=logger_user password=strong_password'
     );
@@ -87,7 +87,7 @@ BEGIN
         v_row_cnt
     );
      -- close connection
-    PERFORM dblink_disconnect('log_conn');
+    PERFORM dwh.dblink_disconnect('log_conn');
 
     EXCEPTION WHEN OTHERS THEN
 
@@ -101,7 +101,7 @@ BEGIN
         SQLERRM
     );
 
-    PERFORM dblink_disconnect('log_conn');
+    PERFORM dwh.dblink_disconnect('log_conn');
 
     RAISE;
 

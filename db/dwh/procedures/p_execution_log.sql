@@ -24,7 +24,7 @@ BEGIN
         p_error_message
     );
 
-    PERFORM dblink_exec('log_conn', v_sql);
+    PERFORM dwh.dblink_exec('log_conn', v_sql);
 
 EXCEPTION WHEN OTHERS THEN
     RAISE NOTICE 'Logging failed: %', SQLERRM;
