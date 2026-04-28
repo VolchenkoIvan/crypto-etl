@@ -9,3 +9,5 @@ logs/
 # IDE (PyCharm)
 .idea/
 __pycache__
+# Игнорирование файла скрипта
+JSON history/crypto_purchases.jsonl
