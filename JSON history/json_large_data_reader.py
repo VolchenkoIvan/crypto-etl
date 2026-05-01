@@ -1,16 +1,7 @@
-import logging
 from pathlib import Path
 import ijson
 import pandas as pd
 from load import get_engine
-import sys
-
-# Настройка логирования
-logging.basicConfig(
-    filename=r"D:\PycharmProjects\crypto-etl\logs\etl_json_load.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
 
 def _flush_batch(batch: list[dict], engine) -> int:
     if not batch:
@@ -72,11 +63,3 @@ def json_reader() -> None:
     if batch:
         inserted = _flush_batch(batch, engine)
         loaded_rows += inserted
-
-if __name__ == "__main__":
-    # При любой критической ошибке завершаем процесс с non-zero exit code.
-    try:
-        json_reader()
-    except Exception as e:
-        logging.exception("ETL failed: %s", e)
-        sys.exit(1)
