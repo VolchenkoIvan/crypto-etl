@@ -38,6 +38,9 @@ def json_reader() -> None:
     batch: list[dict] = []
     engine = get_engine()
 
+    if not file_path.exists():
+        raise FileNotFoundError(f"Input file not found: {file_path}")
+
     logging.info(
         "JSON load started | file=%s ",
         file_path,

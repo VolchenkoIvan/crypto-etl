@@ -32,16 +32,14 @@ def _flush_batch(batch: list[dict], engine) -> int:
 
 def json_reader() -> None:
     batch_size = 5000
-    file_path = Path(__file__).with_name("crypto_nested_large.jsonl")
+    file_path = Path(__file__).with_name("crypto_nested_large.json")
     loaded_rows = 0
     invalid_rows = 0
     batch: list[dict] = []
     engine = get_engine()
 
-    logging.info(
-        "JSON-large load started | file=%s ",
-        file_path,
-    )
+    if not file_path.exists():
+        raise FileNotFoundError(f"Input file not found: {file_path}")
 
     file_date = 0
     with open("crypto_nested_large.json", "r", encoding="utf-8") as f:
@@ -63,26 +61,17 @@ def json_reader() -> None:
                     'symbol': tx["symbol"],
                     'amount': tx["amount"],
                     'exchange': tx["exchange"],
-                    'file_date': file_date
+                    'date_id': file_date
                 }
             batch.append(record)
             if len(batch) >= batch_size:
                 inserted = _flush_batch(batch, engine)
                 loaded_rows += inserted
-                logging.info("Batch inserted: %s rows (total=%s)", inserted, loaded_rows)
                 batch = []
 
     if batch:
         inserted = _flush_batch(batch, engine)
         loaded_rows += inserted
-        logging.info("Final batch inserted: %s rows (total=%s)", inserted, loaded_rows)
-
-    logging.info(
-        "JSON load finished | loaded=%s | invalid=%s",
-        loaded_rows,
-        invalid_rows,
-    )
-
 
 if __name__ == "__main__":
     # При любой критической ошибке завершаем процесс с non-zero exit code.

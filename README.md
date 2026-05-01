@@ -16,7 +16,6 @@ Work with API
 - Создать dwh таблицу для purchases_history
 - Создать процедуру записи для purchases_history (посмотреть также dim)
 - Внедрить в проект!
-  - ijson
   - response = requests.get(url, stream=True)
   for item in ijson.items(response.raw, "data.item"):
   print(item)
