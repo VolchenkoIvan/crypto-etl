@@ -2,6 +2,8 @@ import logging
 import sys
 from json_large_data_reader import json_reader as jr_large
 from json_reader import json_reader as jr
+from load import get_engine
+from sqlalchemy import text
 
 # Настройка логирования
 logging.basicConfig(
@@ -18,11 +20,19 @@ def start_readers():
     """
     logging.info("ETL started")
 
+    engine = get_engine()
+
+    with engine.begin() as conn:
+        conn.execute(text("TRUNCATE TABLE stg.purchases_history"))
+
     # Reading large ijson file
     jr_large()
     # Reading jsonl
     jr()
-    
+
+    with engine.begin() as conn:
+        conn.execute(text("CALL dwh.load_purchases_history()"))
+
     logging.info("ETL finished")
 
 if __name__ == "__main__":
