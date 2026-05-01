@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS stg.purchases_history (
     symbol         TEXT,
     amount         TEXT,
     exchange       TEXT,
-    file_date      TEXT                  -- YYYYMMDD
+    file_date      TEXT,                  -- YYYYMMDD
+    source         TEXT
 );

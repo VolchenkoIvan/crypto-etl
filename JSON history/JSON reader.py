@@ -17,6 +17,7 @@ def _flush_batch(batch: list[dict], engine) -> int:
         return 0
 
     df = pd.DataFrame(batch)
+    df["source"] = "jsonl"
     with engine.begin() as conn:
         df.to_sql(
             name="purchases_history",
