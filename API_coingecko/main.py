@@ -1,12 +1,12 @@
 import logging
 import sys
-from extract import fetch_data
+from API_coingecko.extract import fetch_data
 from transform import transform_data
-from load import load_data
+from API_coingecko.load import load_data
 
 # Настройка логирования
 logging.basicConfig(
-    filename="logs/etl.log",
+    filename="../logs/etl.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )

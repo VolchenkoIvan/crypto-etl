@@ -1,7 +1,7 @@
 from pathlib import Path
 import ijson
 import pandas as pd
-from load import get_engine
+from API_coingecko.load import get_engine
 
 def _flush_batch(batch: list[dict], engine) -> int:
     if not batch:

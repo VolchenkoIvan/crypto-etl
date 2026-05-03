@@ -2,7 +2,7 @@ import logging
 import sys
 from json_large_data_reader import json_reader as jr_large
 from json_reader import json_reader as jr
-from load import get_engine
+from API_coingecko.load import get_engine
 from sqlalchemy import text
 
 # Настройка логирования
