@@ -1,7 +1,7 @@
 import logging
 import sys
 from API_coingecko.extract import fetch_data
-from transform import transform_data
+from API_coingecko.transform import transform_data
 from API_coingecko.load import load_data
 
 # Настройка логирования
